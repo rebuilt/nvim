@@ -37,6 +37,7 @@ vim.opt.shiftround = true
 vim.opt.smartindent = false
 vim.opt.wrap = false
 vim.opt.linebreak = true
+vim.opt.swapfile = false
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
@@ -72,7 +73,7 @@ vim.opt.updatetime = 50
 
 -- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 500
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -267,7 +268,9 @@ require("lazy").setup({
 				-- ["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
 				-- ["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
 				-- ["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
+				a = { "<cmd>e ~/.config/nvim/init.lua<cr>", "Open config" },
 				e = { "<cmd>NvimTreeToggle<cr>", "Open File Tree" },
+				c = { "<cmd>bd<cr>", "Close current file" },
 				s = {
 					w = { "<cmd>Telescope live_grep<cr>", "Search word" },
 				},
@@ -950,6 +953,14 @@ require("lazy").setup({
 			vim.cmd([[ let g:EditorConfig_core_mode = 'external_command' ]])
 		end,
 	},
+	{
+		"ahmedkhalf/project.nvim",
+		config = function()
+			require("project_nvim").setup({
+				patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "Gemfile" },
+			})
+		end,
+	},
 	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
@@ -1065,6 +1076,7 @@ end
 require("nvim-tree").setup({ on_attach = nvim_tree_on_attach })
 
 require("bufferline").setup({})
+require("telescope").load_extension("projects")
 
 require("onedark").setup({
 	style = "warmer",
