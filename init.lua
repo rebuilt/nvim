@@ -765,6 +765,7 @@ require("lazy").setup({
 
 	-- Colorscheme
 	{ "navarasu/onedark.nvim" },
+	{ "nvim-tree/nvim-tree.lua" },
 
 	-- Highlight todo, notes, etc in comments
 	{
@@ -909,6 +910,23 @@ vim.keymap.set("n", "<leader>lx", function()
 		underline = isLspDiagnosticsVisible,
 	})
 end)
+local function nvim_tree_on_attach(bufnr)
+	local api = require("nvim-tree.api")
+
+	local function opts(desc)
+		return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+	end
+
+	-- custom mappings
+	vim.keymap.set("n", "<Leader>e", api.tree.toggle, opts("Close"))
+	vim.keymap.set("n", "l", api.node.open.edit, opts("Open"))
+	vim.keymap.set("n", "<CR>", api.node.open.edit, opts("Open"))
+	vim.keymap.set("n", "v", api.node.open.vertical, opts("Open: Vertical Split"))
+	vim.keymap.set("n", "h", api.node.navigate.parent_close, opts("Close Directory"))
+	vim.keymap.set("n", "C", api.tree.change_root_to_node, opts("CD"))
+end
+
+require("nvim-tree").setup({ on_attach = nvim_tree_on_attach })
 
 require("bufferline").setup({})
 
