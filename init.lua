@@ -719,7 +719,7 @@ require("lazy").setup({
 					--  This will auto-import if your LSP supports it.
 					--  This will expand snippets if the LSP sent a snippet.
 					-- ["<C-y>"] = cmp.mapping.confirm({ select = true }),
-					["<CR>"] = cmp.mapping.confirm({ select = true }),
+					["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
 					-- If you prefer more traditional completion keymaps,
 					-- you can uncomment the following lines
@@ -774,7 +774,37 @@ require("lazy").setup({
 		dependencies = { "nvim-lua/plenary.nvim" },
 		opts = { signs = false },
 	},
+	{ "tpope/vim-surround" },
+	{
+		"tpope/vim-repeat",
+	},
 
+	{
+		"kevinhwang91/nvim-bqf",
+		event = { "BufRead", "BufNew" },
+		config = function()
+			require("bqf").setup({
+				auto_enable = true,
+				preview = {
+					win_height = 12,
+					win_vheight = 12,
+					delay_syntax = 80,
+					border_chars = { "┃", "┃", "━", "━", "┏", "┓", "┗", "┛", "█" },
+				},
+				func_map = {
+					vsplit = "",
+					ptogglemode = "z,",
+					stoggleup = "",
+				},
+				filter = {
+					fzf = {
+						action_for = { ["ctrl-s"] = "split" },
+						extra_opts = { "--bind", "ctrl-o:toggle-all", "--prompt", "> " },
+					},
+				},
+			})
+		end,
+	},
 	{ -- Collection of various small independent plugins/modules
 		"echasnovski/mini.nvim",
 		config = function()
@@ -791,7 +821,7 @@ require("lazy").setup({
 			-- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
 			-- - sd'   - [S]urround [D]elete [']quotes
 			-- - sr)'  - [S]urround [R]eplace [)] [']
-			require("mini.surround").setup()
+			-- require("mini.surround").setup()
 
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
@@ -812,8 +842,114 @@ require("lazy").setup({
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
-	{ "windwp/nvim-autopairs" },
+	{
+		"windwp/nvim-autopairs",
+		event = "InsertEnter",
+		-- Optional dependency
+		dependencies = { "hrsh7th/nvim-cmp" },
+		config = function()
+			require("nvim-autopairs").setup({})
+			-- If you want to automatically add `(` after selecting a function or method
+			local cmp_autopairs = require("nvim-autopairs.completion.cmp")
+			local cmp = require("cmp")
+			cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
+		end,
+	},
 	{ "tpope/vim-rsi" },
+	{
+		"tpope/vim-fugitive",
+		cmd = {
+			"G",
+			"Git",
+			"Gdiffsplit",
+			"Gread",
+			"Gwrite",
+			"Ggrep",
+			"GMove",
+			"GDelete",
+			"GBrowse",
+			"GRemove",
+			"GRename",
+			"Glgrep",
+			"Gedit",
+		},
+	},
+	{
+		"folke/trouble.nvim",
+		cmd = "TroubleToggle",
+	},
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		-- lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md"
+		--   "BufReadPre path/to/my-vault/**.md",
+		--   "BufNewFile path/to/my-vault/**.md",
+		-- },
+		dependencies = { "nvim-lua/plenary.nvim" },
+	},
+	opts = {
+		workspaces = {
+			{
+				name = "personal",
+				path = "~/vaults/personal",
+			},
+			{
+				name = "work",
+				path = "~/vaults/work",
+			},
+		},
+	},
+	{ "dhruvasagar/vim-table-mode" },
+
+	{
+		"junegunn/vim-easy-align",
+		init = function()
+			vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", {
+				noremap = false,
+				silent = true,
+			})
+		end,
+	},
+	{
+		"phaazon/hop.nvim",
+		name = "hop",
+		keys = { "s", "S" },
+		config = function()
+			-- you can configure Hop the way you like here; see :h hop-config
+			require("hop").setup({ keys = "etovxqpdygfblzhckisuran" })
+			vim.api.nvim_set_keymap("n", "s", ":HopWord<cr>", {})
+			vim.api.nvim_set_keymap("n", "S", ":HopPattern<cr>", {})
+		end,
+	},
+	{
+		"vim-test/vim-test",
+		cmd = { "TestNearest", "TestFile", "TestSuite", "TestLast", "TestVisit" },
+		config = function()
+			vim.cmd("let test#strategy = 'dispatch'")
+		end,
+	},
+	{
+		"mg979/vim-visual-multi",
+		config = function()
+			vim.cmd([[
+                let g:VM_maps = {}
+                let g:VM_mouse_mappings = 1
+                ]])
+		end,
+	},
+	{
+		"editorconfig/editorconfig-vim",
+		config = function()
+			vim.cmd([[ let g:EditorConfig_exclude_patterns = ['fugitive://.*'] ]])
+			vim.cmd([[ let g:EditorConfig_exec_path = '/usr/bin/editorconfig' ]])
+			vim.cmd([[ let g:EditorConfig_core_mode = 'external_command' ]])
+		end,
+	},
 	{ "akinsho/bufferline.nvim", version = "*", dependencies = "nvim-tree/nvim-web-devicons" },
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
@@ -931,7 +1067,7 @@ require("nvim-tree").setup({ on_attach = nvim_tree_on_attach })
 require("bufferline").setup({})
 
 require("onedark").setup({
-	style = "darker",
+	style = "warmer",
 })
 require("onedark").load()
 vim.cmd([[colorscheme onedark]])
