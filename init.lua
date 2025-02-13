@@ -462,12 +462,12 @@ require("lazy").setup({
 				desc = "Buffer Diagnostics (Trouble)",
 			},
 			{
-				"<leader>cs",
+				"<leader>Cs",
 				"<cmd>Trouble symbols toggle focus=false<cr>",
 				desc = "Symbols (Trouble)",
 			},
 			{
-				"<leader>cl",
+				"<leader>Cl",
 				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
 				desc = "LSP Definitions / references / ... (Trouble)",
 			},
@@ -529,7 +529,9 @@ require("lazy").setup({
 
 			-- Document existing key chains
 			spec = {
-				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
+				{ "<leader>C", group = "[C]ode", mode = { "n", "x" } },
+				{ "<leader>c", group = "Close", mode = { "n", "x" } },
+				{ "<leader>a", group = "Settings File", mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
@@ -760,7 +762,7 @@ require("lazy").setup({
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
-					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("<leader>Ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
 					--  For example, in C this would take you to the header.
@@ -880,6 +882,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"solargraph",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -932,6 +935,7 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				ruby = { "rubyfmt" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
@@ -1200,6 +1204,7 @@ require("lazy").setup({
 				"markdown",
 				"markdown_inline",
 				"query",
+				"ruby",
 				"vim",
 				"vimdoc",
 			},
@@ -1282,10 +1287,69 @@ npairs.add_rules(require("nvim-autopairs.rules.endwise-lua"))
 npairs.add_rules(require("nvim-autopairs.rules.endwise-ruby"))
 
 local builtin = require("telescope.builtin")
-vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "Telescope find files" })
-vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "Telescope live grep" })
-vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "Telescope buffers" })
-vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Telescope help tags" })
+vim.keymap.set("n", "<leader>f", builtin.find_files, { desc = "Telescope find files" })
+vim.keymap.set("n", "<leader>sw", builtin.live_grep, { desc = "Telescope live grep" })
+vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "Telescope buffers" })
+vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "Telescope help tags" })
 
 vim.api.nvim_set_keymap("n", "<A-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<A-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<F12>", ":set relativenumber!<CR>", { noremap = true, silent = true })
+-- Hitting escape also clears spelling and search highlights
+vim.api.nvim_set_keymap(
+	"n",
+	"<ESC>",
+	":nohls |:set norelativenumber | :setlocal nospell<ESC>",
+	{ noremap = true, silent = true }
+)
+
+-- When you search, center the result and open any folds
+vim.api.nvim_set_keymap("n", "n", "nzzzv", { noremap = true, silent = true })
+
+-- When you search backwards, center the result and open any folds
+vim.api.nvim_set_keymap("n", "N", "Nzzzv", { noremap = true, silent = true })
+
+-- Keep the cursor in the same place when joining lines
+vim.api.nvim_set_keymap("n", "J", "mzJ`z", { noremap = true, silent = true })
+
+vim.api.nvim_set_keymap("n", "<leader>y", '"+y', { noremap = true, silent = true })
+
+-- If a movement is greater than 15 lines, add it to the jump list
+vim.api.nvim_set_keymap(
+	"n",
+	"k",
+	[[(v:count > 50 ? "m'" . v:count : "") . 'k']],
+	{ noremap = true, silent = true, expr = true }
+)
+vim.api.nvim_set_keymap(
+	"n",
+	"j",
+	[[(v:count > 50 ? "m'" . v:count : "") . 'j']],
+	{ noremap = true, silent = true, expr = true }
+)
+
+-- Yank from the current position to the end of the line
+vim.api.nvim_set_keymap("n", "Y", "y$", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>bd<cr>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>:e ~/.config/nvim/init.lua<cr>", { noremap = true, silent = true })
+
+nvim_lsp = require("lspconfig")
+
+-- PLUGIN / neovim native lsp / ruby / solargraph
+require("lspconfig").solargraph.setup({
+	-- cmd = { os.getenv( "HOME" ) .. "/.rvm/shims/solargraph", 'stdio' },
+	cmd = { os.getenv("HOME") .. "/.asdf/shims/solargraph", "stdio" },
+	root_dir = nvim_lsp.util.root_pattern("Gemfile", ".git", "."),
+	settings = {
+		solargraph = {
+			autoformat = true,
+			formatting = true,
+			completion = true,
+			diagnostic = true,
+			folding = true,
+			references = true,
+			rename = true,
+			symbols = true,
+		},
+	},
+})
