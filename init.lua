@@ -916,6 +916,11 @@ require("lazy").setup({
 			},
 		},
 		opts = {
+			formatters = {
+				rubocop = {
+					args = { "-a", "-f", "quiet", "--stderr", "--stdin", "$FILENAME" },
+				},
+			},
 			notify_on_error = false,
 			format_on_save = function(bufnr)
 				-- Disable "format_on_save lsp_fallback" for languages that don't
