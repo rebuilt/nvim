@@ -435,7 +435,7 @@ require("lazy").setup({
 			]])
 		end,
 	},
-
+	{ "dhruvasagar/vim-table-mode" },
 	-- {
 	-- 	"junegunn/vim-easy-align",
 	-- 	init = function()
