@@ -1057,6 +1057,19 @@ require("lazy").setup({
 								return -- success, exit early
 							end
 						else
+							local entry = cmp.get_selected_entry()
+							local is_copilot = entry and entry.source.name == "copilot"
+							print(is_copilot)
+							if is_copilot then
+								local confirm_opts = {
+									behavior = ConfirmBehavior.Replace,
+									select = true,
+								}
+								if cmp.confirm(confirm_opts) then
+									return -- success, exit early
+								end
+							end
+
 							fallback()
 						end
 					end, { "i", "s", "c" }),
@@ -1183,6 +1196,7 @@ require("lazy").setup({
 			--  Check out: https://github.com/echasnovski/mini.nvim
 		end,
 	},
+	{ "github/copilot.vim" },
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
