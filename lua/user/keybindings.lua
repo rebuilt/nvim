@@ -91,26 +91,10 @@ M.setup = function()
 	vim.api.nvim_set_keymap("n", "<leader>c", "<cmd>bd<cr>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<leader>a", "<cmd>:e ~/.config/nvim/init.lua<cr>", { noremap = true, silent = true })
 
-	nvim_lsp = require("lspconfig")
-
-	-- PLUGIN / neovim native lsp / ruby / solargraph
-	require("lspconfig").solargraph.setup({
-		-- cmd = { os.getenv( "HOME" ) .. "/.rvm/shims/solargraph", 'stdio' },
-		cmd = { os.getenv("HOME") .. "/.asdf/shims/solargraph", "stdio" },
-		root_dir = nvim_lsp.util.root_pattern("Gemfile", ".git", "."),
-		settings = {
-			solargraph = {
-				autoformat = true,
-				formatting = true,
-				completion = true,
-				diagnostic = true,
-				folding = true,
-				references = true,
-				rename = true,
-				symbols = true,
-			},
-		},
-	})
+	vim.api.nvim_set_keymap("n", "<C-Left>", ":vertical resize -2<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "<C-Up>", ":resize -2<CR>", { noremap = true, silent = true })
+	vim.api.nvim_set_keymap("n", "<C-Down>", ":resize +2<CR>", { noremap = true, silent = true })
 end
 
 return M
