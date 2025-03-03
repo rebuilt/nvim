@@ -1,5 +1,5 @@
 local M = {}
-M.setup = function()
+M.setup = function(config)
 	-- This is a simple example of how to use the `lazy.nvim` plugin manager.
 	-- It is recommended to use this as a starting point for your own configuration.
 	-- You can find more information about `lazy.nvim` at
@@ -57,7 +57,6 @@ M.setup = function()
 				},
 			},
 		},
-
 		{
 			"nvim-tree/nvim-tree.lua",
 			config = function()
@@ -871,18 +870,17 @@ M.setup = function()
 									return -- success, exit early
 								end
 							else
-								local entry = cmp.get_selected_entry()
-								local is_copilot = entry and entry.source.name == "copilot"
-								print(is_copilot)
-								if is_copilot then
-									local confirm_opts = {
-										behavior = ConfirmBehavior.Replace,
-										select = true,
-									}
-									if cmp.confirm(confirm_opts) then
-										return -- success, exit early
-									end
-								end
+								-- local entry = cmp.get_selected_entry()
+								-- local is_copilot = entry and entry.source.name == "copilot"
+								-- if is_copilot then
+								-- 	local confirm_opts = {
+								-- 		behavior = ConfirmBehavior.Replace,
+								-- 		select = true,
+								-- 	}
+								-- 	if cmp.confirm(confirm_opts) then
+								-- 		return -- success, exit early
+								-- 	end
+								-- end
 
 								fallback()
 							end
@@ -938,10 +936,13 @@ M.setup = function()
 						{ name = "nvim_lsp" },
 						{ name = "luasnip" },
 						{ name = "path" },
+						{ name = "copilot" },
 					},
 				})
 			end,
 		},
+
+		{ "hrsh7th/cmp-copilot", cond = config.enable_copilot },
 
 		{ -- You can easily change to a different colorscheme.
 			-- Change the name of the colorscheme plugin below, and then
@@ -1010,7 +1011,7 @@ M.setup = function()
 				--  Check out: https://github.com/echasnovski/mini.nvim
 			end,
 		},
-		{ "github/copilot.vim" },
+		{ "github/copilot.vim", cond = config.enable_copilot },
 		{
 			"akinsho/bufferline.nvim",
 			version = "*",
