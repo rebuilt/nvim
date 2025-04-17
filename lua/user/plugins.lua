@@ -58,6 +58,15 @@ M.setup = function(config)
 			},
 		},
 		{
+			"brenoprata10/nvim-highlight-colors",
+			config = function()
+				-- Ensure termguicolors is enabled if not already
+				vim.opt.termguicolors = true
+
+				require("nvim-highlight-colors").setup({})
+			end,
+		},
+		{
 			"nvim-tree/nvim-tree.lua",
 			config = function()
 				local function my_on_attach(bufnr)
@@ -804,6 +813,14 @@ M.setup = function(config)
 				local cmp = require("cmp")
 				local luasnip = require("luasnip")
 				luasnip.config.setup({})
+				local has_words_before = function()
+					if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+						return false
+					end
+					local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+					return col ~= 0
+						and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+				end
 
 				cmp.setup({
 					snippet = {
@@ -842,49 +859,13 @@ M.setup = function(config)
 						--  Generally you don't need this, because nvim-cmp will display
 						--  completions whenever it has completion options available.
 						["<C-Space>"] = cmp.mapping.complete({}),
-						["<Tab>"] = cmp.mapping(function(fallback)
-							-- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
-							if cmp.visible() then
-								local status_cmp_ok, cmp_types = pcall(require, "cmp.types.cmp")
-								if not status_cmp_ok then
-									return
-								end
-								local ConfirmBehavior = cmp_types.ConfirmBehavior
-								local confirm_opts = {
-									behavior = ConfirmBehavior.Replace,
-									select = false,
-								}
-								local is_insert_mode = function()
-									return vim.api.nvim_get_mode().mode:sub(1, 1) == "i"
-								end
-								if is_insert_mode() then -- prevent overwriting brackets
-									confirm_opts.behavior = ConfirmBehavior.Insert
-								end
-								local entry = cmp.get_selected_entry()
-								local is_copilot = entry and entry.source.name == "copilot"
-								if is_copilot then
-									confirm_opts.behavior = ConfirmBehavior.Replace
-									confirm_opts.select = true
-								end
-								if cmp.confirm(confirm_opts) then
-									return -- success, exit early
-								end
+						["<Tab>"] = vim.schedule_wrap(function(fallback)
+							if cmp.visible() and has_words_before() then
+								cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
 							else
-								-- local entry = cmp.get_selected_entry()
-								-- local is_copilot = entry and entry.source.name == "copilot"
-								-- if is_copilot then
-								-- 	local confirm_opts = {
-								-- 		behavior = ConfirmBehavior.Replace,
-								-- 		select = true,
-								-- 	}
-								-- 	if cmp.confirm(confirm_opts) then
-								-- 		return -- success, exit early
-								-- 	end
-								-- end
-
 								fallback()
 							end
-						end, { "i", "s", "c" }),
+						end),
 						["<S-Tab>"] = {
 							c = function()
 								if cmp.visible() then
@@ -942,7 +923,22 @@ M.setup = function(config)
 			end,
 		},
 
-		{ "hrsh7th/cmp-copilot", cond = config.enable_copilot },
+		{
+			"zbirenbaum/copilot.lua",
+			cmd = "Copilot",
+			event = "InsertEnter",
+			cond = config.enable_copilot,
+			config = function()
+				require("copilot").setup({})
+			end,
+		},
+		{
+			"zbirenbaum/copilot-cmp",
+			cond = config.enable_copilot,
+			config = function()
+				require("copilot_cmp").setup()
+			end,
+		},
 
 		{ -- You can easily change to a different colorscheme.
 			-- Change the name of the colorscheme plugin below, and then
@@ -1011,7 +1007,6 @@ M.setup = function(config)
 				--  Check out: https://github.com/echasnovski/mini.nvim
 			end,
 		},
-		{ "github/copilot.vim", cond = config.enable_copilot },
 		{
 			"akinsho/bufferline.nvim",
 			version = "*",
