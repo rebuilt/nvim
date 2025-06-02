@@ -32,6 +32,12 @@ M.setup = function(config)
 		"tpope/vim-repeat",
 		"tpope/vim-fugitive",
 		"kevinhwang91/nvim-bqf",
+		{
+			"nvim-focus/focus.nvim",
+			config = function()
+				require("focus").setup()
+			end,
+		},
 
 		-- NOTE: Plugins can also be added by using a table,
 		-- with the first argument being the link and the following
