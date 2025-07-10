@@ -2,6 +2,7 @@ local M = {}
 
 M.setup = function()
 	nvim_lsp = require("lspconfig")
+	nvim_lsp.gleam.setup({})
 
 	-- PLUGIN / neovim native lsp / ruby / solargraph
 	require("lspconfig").solargraph.setup({
