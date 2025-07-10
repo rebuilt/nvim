@@ -256,15 +256,15 @@ M.setup = function(config)
 			end,
 		},
 		{ "dhruvasagar/vim-table-mode" },
-		-- {
-		-- 	"junegunn/vim-easy-align",
-		-- 	init = function()
-		-- 		vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", {
-		-- 			noremap = false,
-		-- 			silent = true,
-		-- 		})
-		-- 	end,
-		-- },
+		{
+			"junegunn/vim-easy-align",
+			init = function()
+				vim.api.nvim_set_keymap("x", "ga", "<Plug>(EasyAlign)", {
+					noremap = false,
+					silent = true,
+				})
+			end,
+		},
 		-- TODO fix this
 		{
 			"folke/trouble.nvim",
