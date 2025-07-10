@@ -92,6 +92,16 @@ M.setup = function()
 	vim.api.nvim_set_keymap("n", "<C-Right>", ":vertical resize +2<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-Up>", ":resize -2<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<C-Down>", ":resize +2<CR>", { noremap = true, silent = true })
+
+	-- Keymaps for the neotest plugin
+	local wk = require("which-key")
+	wk.add({
+		{ "<leader>t", group = "test" },
+		{ "<leader>tf", "<cmd>lua require('neotest').run.run()<cr>", desc = "Test File" },
+		{ "<leader>tn", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "Test Nearest" },
+		{ "<leader>td", "<cmd>lua require('neotest').run.run('./')<cr>", desc = "Test Directory" },
+		{ "<leader>tt", "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<cr>", desc = "Run All Tests" },
+	})
 end
 
 return M
