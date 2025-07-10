@@ -47,6 +47,9 @@ M.setup = function()
 	vim.api.nvim_set_keymap("n", "<A-l>", ":BufferLineCycleNext<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<A-h>", ":BufferLineCyclePrev<CR>", { noremap = true, silent = true })
 	vim.api.nvim_set_keymap("n", "<F12>", ":set relativenumber!<CR>", { noremap = true, silent = true })
+
+	vim.api.nvim_set_keymap("n", "<A-o>", ":CodeCompanionChat Toggle<CR>", { noremap = true, silent = true })
+
 	-- Hitting escape also clears spelling and search highlights
 	vim.api.nvim_set_keymap(
 		"n",
