@@ -1161,6 +1161,39 @@ M.setup = function(config)
 			end,
 		},
 
+		{
+			"nvim-neotest/neotest",
+			dependencies = {
+				"nvim-neotest/nvim-nio",
+				"nvim-lua/plenary.nvim",
+				"antoinemadec/FixCursorHold.nvim",
+				"nvim-treesitter/nvim-treesitter",
+				"olimorris/neotest-rspec",
+			},
+			config = function()
+				require("neotest").setup({
+					adapters = {
+						require("neotest-rspec")({
+							rspec_cmd = function()
+								return vim.tbl_flatten({
+									"bundle",
+									"exec",
+									"rspec",
+								})
+							end,
+						}),
+					},
+				})
+			end,
+		},
+		{
+			"olimorris/codecompanion.nvim",
+			opts = {},
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"nvim-treesitter/nvim-treesitter",
+			},
+		},
 		{ -- Highlight, edit, and navigate code
 			"nvim-treesitter/nvim-treesitter",
 			build = ":TSUpdate",
