@@ -767,7 +767,6 @@ M.setup = function(config)
 				end,
 				formatters_by_ft = {
 					lua = { "stylua" },
-					ruby = { "rubyfmt" },
 					go = { "gofmt" },
 					-- Conform can also run multiple formatters sequentially
 					-- python = { "isort", "black" },
