@@ -51,18 +51,15 @@ M.setup = function(config)
 		--    require('gitsigns').setup({ ... })
 		--
 		-- See `:help gitsigns` to understand what the configuration keys do
-		{ -- Adds git related signs to the gutter, as well as utilities for managing changes
-			"lewis6991/gitsigns.nvim",
-			opts = {
-				signs = {
-					add = { text = "+" },
-					change = { text = "~" },
-					delete = { text = "_" },
-					topdelete = { text = "‾" },
-					changedelete = { text = "~" },
-				},
-			},
-		},
+		--  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+		-- 	"lewis6991/gitsigns.nvim",
+		-- },
+		-- {"airblade/vim-gitgutter"},
+		{ 'echasnovski/mini.nvim', 
+		version = false,
+			config = function()
+				require('mini.diff').setup()
+			end},
 		{
 			"brenoprata10/nvim-highlight-colors",
 			config = function()
