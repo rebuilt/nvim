@@ -20,6 +20,6 @@ local config = { enable_copilot = true }
 require("user.options").setup()
 require("user.autocommands").setup()
 require("user.plugins").setup(config)
-require("user.keybindings").setup()
 require("user.autopairs").setup()
 require("user.lsp").setup()
+require("user.keybindings").setup()
