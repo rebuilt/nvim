@@ -17,11 +17,12 @@ vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 local config = { enable_copilot = true }
 
+require("user.plugins").setup(config)
 require("user.options").setup()
 require("user.autocommands").setup()
-require("user.plugins").setup(config)
 require("user.autopairs").setup()
 require("user.lsp").setup()
 require("user.keybindings").setup()
 
 require('nvim-treesitter').install({ 'rust', 'javascript', 'zig' , 'typescript', 'lua','c', 'ruby', 'go', 'java', 'html', 'css', 'json', 'yaml', 'bash', 'markdown', 'markdown_inline', 'elixir', 'gleam' })
+
