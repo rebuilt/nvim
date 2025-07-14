@@ -1,3 +1,4 @@
+-- https://github.com/onosendi/dotfiles/blob/master/common/.config/nvim/lua/config/lsp/global.lua
 local M = {}
 
 M.setup = function()
