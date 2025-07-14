@@ -28,6 +28,18 @@ M.setup = function(config)
 	-- NOTE: Here is where you install your plugins.
 	require("lazy").setup({
 		-- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
+		{ -- Highlight, edit, and navigate code
+			-- cargo install --locked tree-sitter-cli
+
+			"nvim-treesitter/nvim-treesitter",
+			lazy = false,
+			build = ":TSUpdate",
+			branch = 'main',
+			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
+			config = function()
+			end,
+		},
+
 		"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
 		"tpope/vim-repeat",
 		"tpope/vim-fugitive",
@@ -1190,17 +1202,6 @@ M.setup = function(config)
 				"nvim-lua/plenary.nvim",
 				"nvim-treesitter/nvim-treesitter",
 			},
-		},
-		{ -- Highlight, edit, and navigate code
-			-- cargo install --locked tree-sitter-cli
-
-			"nvim-treesitter/nvim-treesitter",
-			lazy = false,
-			build = ":TSUpdate",
-			branch = 'main',
-			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-			config = function()
-			end,
 		},
 
 		-- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the

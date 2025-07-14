@@ -24,5 +24,4 @@ require("user.autopairs").setup()
 require("user.lsp").setup()
 require("user.keybindings").setup()
 
-require('nvim-treesitter').install({ 'rust', 'javascript', 'zig' , 'typescript', 'lua','c', 'ruby', 'go', 'java', 'html', 'css', 'json', 'yaml', 'bash', 'markdown', 'markdown_inline', 'elixir', 'gleam' })
-
+-- require('nvim-treesitter').install({ 'rust', 'javascript', 'zig' , 'typescript', 'lua','c', 'ruby', 'go', 'java', 'html', 'css', 'json', 'yaml', 'bash', 'markdown', 'markdown_inline', 'elixir', 'gleam' })
