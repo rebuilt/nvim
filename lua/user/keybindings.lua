@@ -102,6 +102,9 @@ M.setup = function()
 		{ "<leader>td", "<cmd>lua require('neotest').run.run('./')<cr>", desc = "Test Directory" },
 		{ "<leader>tt", "<cmd>lua require('neotest').run.run(vim.fn.getcwd())<cr>", desc = "Run All Tests" },
 	})
+
+	-- LSP keymaps
+	vim.keymap.set("n", "<leader>lR", ":LspRestart<CR>", { desc = "Restart LSP server" })
 end
 
 return M
