@@ -34,10 +34,9 @@ M.setup = function(config)
 			"nvim-treesitter/nvim-treesitter",
 			lazy = false,
 			build = ":TSUpdate",
-			branch = 'main',
+			branch = "main",
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-			config = function()
-			end,
+			config = function() end,
 		},
 
 		"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
@@ -67,11 +66,13 @@ M.setup = function(config)
 		-- 	"lewis6991/gitsigns.nvim",
 		-- },
 		-- {"airblade/vim-gitgutter"},
-		{ 'echasnovski/mini.nvim', 
-		version = false,
+		{
+			"echasnovski/mini.nvim",
+			version = false,
 			config = function()
-				require('mini.diff').setup()
-			end},
+				require("mini.diff").setup()
+			end,
+		},
 		{
 			"brenoprata10/nvim-highlight-colors",
 			config = function()
