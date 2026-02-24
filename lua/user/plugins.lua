@@ -260,9 +260,9 @@ M.setup = function(config)
 			"mg979/vim-visual-multi",
 			config = function()
 				vim.cmd([[
-			let g:VM_maps = {}
-			let g:VM_mouse_mappings = 1
-			]])
+					let g:VM_maps = {}
+					let g:VM_mouse_mappings = 1
+					]])
 			end,
 		},
 		{ "dhruvasagar/vim-table-mode" },
@@ -1027,6 +1027,9 @@ M.setup = function(config)
 						{ name = "nvim_lsp" },
 						{ name = "luasnip" },
 						{ name = "path" },
+						per_filetype = {
+							codecompanion = { "codecompanion" },
+						},
 						-- { name = "copilot" },
 					},
 				})
@@ -1092,7 +1095,22 @@ M.setup = function(config)
 				require("copilot_cmp").setup()
 			end,
 		},
-
+		{
+			"MeanderingProgrammer/render-markdown.nvim",
+			ft = { "markdown", "codecompanion" },
+		},
+		{
+			"HakonHarnes/img-clip.nvim",
+			opts = {
+				filetypes = {
+					codecompanion = {
+						prompt_for_file_name = false,
+						template = "[Image]($FILE_PATH)",
+						use_absolute_path = true,
+					},
+				},
+			},
+		},
 		{ -- You can easily change to a different colorscheme.
 			-- Change the name of the colorscheme plugin below, and then
 			-- change the command in the config to whatever the name of that colorscheme is.
@@ -1201,6 +1219,8 @@ M.setup = function(config)
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"nvim-treesitter/nvim-treesitter",
+				"ravitemer/mcphub.nvim",
+				-- "ravitemer/codecompanion-history.nvim",
 			},
 		},
 
