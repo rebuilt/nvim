@@ -86,6 +86,22 @@ require("codecompanion").setup({
 			},
 			adapter = "llama.cpp",
 		},
+		inline = {
+			keymaps = {
+				accept_change = {
+					modes = { n = "ga" },
+					description = "Accept the suggested change",
+				},
+				reject_change = {
+					modes = { n = "gr" },
+					opts = { nowait = true },
+					description = "Reject the suggested change",
+				},
+				always_accept = {
+					modes = { n = "gy" },
+					description = "Accept all changes",
+				},
+			},
+		},
 	},
 })
--- require('').install({ 'rust', 'javascript', 'zig' , 'typescript', 'lua','c', 'ruby', 'go', 'java', 'html', 'css', 'json', 'yaml', 'bash', 'markdown', 'markdown_inline', 'elixir', 'gleam' })
