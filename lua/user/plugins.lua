@@ -1213,7 +1213,7 @@ M.setup = function(config)
 				})
 			end,
 		},
-		{
+		{ -- ai code
 			"olimorris/codecompanion.nvim",
 			opts = {},
 			dependencies = {
