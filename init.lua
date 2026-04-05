@@ -23,7 +23,7 @@ require("user.autocommands").setup()
 require("user.autopairs").setup()
 require("user.lsp").setup()
 require("user.keybindings").setup()
-
+require("focal").setup({})
 require("codecompanion").setup({
 	--  extensions = {
 	--   history = {

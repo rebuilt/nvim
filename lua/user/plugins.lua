@@ -1213,7 +1213,17 @@ M.setup = function(config)
 				})
 			end,
 		},
-		{ -- ai code
+		{
+			"hmdfrds/focal.nvim",
+			event = "VeryLazy",
+			dependencies = {
+				"3rd/image.nvim", -- optional if using chafa backend
+			},
+			opts = {
+				-- See Configuration below
+			},
+		},
+		{
 			"olimorris/codecompanion.nvim",
 			opts = {},
 			dependencies = {
